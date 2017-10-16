@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.environment.mapper.TOrderBufferMapper" >
+  <resultMap id="BaseResultMap" type="com.environment.domain.TOrderBuffer" >
+    <id column="i_id" property="i_id" jdbcType="BIGINT" />
+    <result column="v_equipment_name" property="v_equipment_name" jdbcType="VARCHAR" />
+    <result column="v_order_content" property="v_order_content" jdbcType="VARCHAR" />
+    <result column="i_send_flag" property="i_send_flag" jdbcType="INTEGER" />
+    <result column="dtm_create" property="dtm_create" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    i_id, v_equipment_name, v_order_content, i_send_flag, dtm_create
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.environment.domain.TOrderBufferExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_order_buffer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_order_buffer
+    where i_id = #{i_id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_order_buffer
+    where i_id = #{i_id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.environment.domain.TOrderBuffer" >
+    insert into t_order_buffer (i_id, v_equipment_name, v_order_content, 
+      i_send_flag, dtm_create)
+    values (#{i_id,jdbcType=BIGINT}, #{v_equipment_name,jdbcType=VARCHAR}, #{v_order_content,jdbcType=VARCHAR}, 
+      #{i_send_flag,jdbcType=INTEGER}, #{dtm_create,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.environment.domain.TOrderBuffer" >
+    insert into t_order_buffer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="i_id != null" >
+        i_id,
+      </if>
+      <if test="v_equipment_name != null" >
+        v_equipment_name,
+      </if>
+      <if test="v_order_content != null" >
+        v_order_content,
+      </if>
+      <if test="i_send_flag != null" >
+        i_send_flag,
+      </if>
+      <if test="dtm_create != null" >
+        dtm_create,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="i_id != null" >
+        #{i_id,jdbcType=BIGINT},
+      </if>
+      <if test="v_equipment_name != null" >
+        #{v_equipment_name,jdbcType=VARCHAR},
+      </if>
+      <if test="v_order_content != null" >
+        #{v_order_content,jdbcType=VARCHAR},
+      </if>
+      <if test="i_send_flag != null" >
+        #{i_send_flag,jdbcType=INTEGER},
+      </if>
+      <if test="dtm_create != null" >
+        #{dtm_create,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_order_buffer
+    <set >
+      <if test="record.i_id != null" >
+        i_id = #{record.i_id,jdbcType=BIGINT},
+      </if>
+      <if test="record.v_equipment_name != null" >
+        v_equipment_name = #{record.v_equipment_name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.v_order_content != null" >
+        v_order_content = #{record.v_order_content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.i_send_flag != null" >
+        i_send_flag = #{record.i_send_flag,jdbcType=INTEGER},
+      </if>
+      <if test="record.dtm_create != null" >
+        dtm_create = #{record.dtm_create,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_order_buffer
+    set i_id = #{record.i_id,jdbcType=BIGINT},
+      v_equipment_name = #{record.v_equipment_name,jdbcType=VARCHAR},
+      v_order_content = #{record.v_order_content,jdbcType=VARCHAR},
+      i_send_flag = #{record.i_send_flag,jdbcType=INTEGER},
+      dtm_create = #{record.dtm_create,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.environment.domain.TOrderBuffer" >
+    update t_order_buffer
+    <set >
+      <if test="v_equipment_name != null" >
+        v_equipment_name = #{v_equipment_name,jdbcType=VARCHAR},
+      </if>
+      <if test="v_order_content != null" >
+        v_order_content = #{v_order_content,jdbcType=VARCHAR},
+      </if>
+      <if test="i_send_flag != null" >
+        i_send_flag = #{i_send_flag,jdbcType=INTEGER},
+      </if>
+      <if test="dtm_create != null" >
+        dtm_create = #{dtm_create,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where i_id = #{i_id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.environment.domain.TOrderBuffer" >
+    update t_order_buffer
+    set v_equipment_name = #{v_equipment_name,jdbcType=VARCHAR},
+      v_order_content = #{v_order_content,jdbcType=VARCHAR},
+      i_send_flag = #{i_send_flag,jdbcType=INTEGER},
+      dtm_create = #{dtm_create,jdbcType=TIMESTAMP}
+    where i_id = #{i_id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Controller
 @Scope("prototype")
-@Api(value = "index", description = "进入" )
+@Api(value = "index", description = "系统入口" )
 public class Index {
 
 
@@ -26,12 +26,7 @@ public class Index {
 
     @RequestMapping("/index.htm")
     @ApiOperation(value = "进入")
-//    @ApiImplicitParams(value ={
-//            @ApiImplicitParam(paramType="query",name="pageNum",dataType="Integer",required=true,value="页码"),
-//            @ApiImplicitParam(paramType="query",name="pageSize",dataType="Integer",required=true,value="每页显示数量")
-//    })
     public ModelAndView index(HttpServletRequest request , HttpServletResponse response){
-        System.out.println("dddddd");
         ModelAndView mv= new ModelAndView();
          mv.setViewName("index");
         return mv;
@@ -46,18 +41,18 @@ public class Index {
     })
     @ResponseBody
     public Map login(String account, String password, HttpServletRequest request , HttpServletResponse response){
-        System.out.println("dddddd");
+
         Map map=new HashMap();
         if(account.equals("1")&&password.equals("1")){
             map.put("msg","ok");
         }else{
             map.put("msg","error");
         }
-        System.out.println(map);
+
         return map;
     }
     @RequestMapping("/main.htm")
-    @ApiOperation(value = "进入主页")
+    @ApiOperation(value = "进入工作页")
     public ModelAndView main(){
         ModelAndView mv= new ModelAndView();
         mv.setViewName("main");
@@ -65,7 +60,7 @@ public class Index {
     }
 
     @RequestMapping("/quit.htm")
-    @ApiOperation(value = "进入主页")
+    @ApiOperation(value = "退出返回主页")
     public ModelAndView quit(){
         ModelAndView mv= new ModelAndView();
         mv.setViewName("index");
