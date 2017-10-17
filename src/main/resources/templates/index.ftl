@@ -173,7 +173,7 @@
         <nav class="cont_left">
             <p>
             </p><h1>管理系统登陆</h1>
-            <p style="text-align: right; font-size: 20px;">质量监督</p>
+            <p style="text-align: right; font-size: 20px;">环境</p>
             <p></p>
         </nav>
         <nav class="cont_right">

@@ -27,28 +27,32 @@ public class Equipment_dataContrller {
         @ResponseBody
         @ApiOperation(value = "返回设备数据")
         public Map Equipment_dateList(){
-            TEquipmentDataExample de=new TEquipmentDataExample();
-            de.setOrderByClause("v_equipment_name desc");
-            TEquipmentDataExample.Criteria criteria =  de.createCriteria();//查询条件. 暂无就不设置了
+           // 老的当时查询设备. 用java分组去重
+//            TEquipmentDataExample de=new TEquipmentDataExample();
+//            de.setOrderByClause("v_equipment_name desc");
+//            TEquipmentDataExample.Criteria criteria =  de.createCriteria();//查询条件. 暂无就不设置了
+//
+//            de.setDistinct(true);//去重
+//         List<TEquipmentData> list=TEquipmentDataMapper.selectByExample(de);
+//            List<TEquipmentData> getlist=new ArrayList<TEquipmentData>();
+//            for (int i=0;i<list.size();i++){
+//                TEquipmentData listdata=list.get(i);
+//                boolean isf=true;
+//                for (TEquipmentData gitlistdata :getlist){
+//                    if(listdata.getV_equipment_name().equals(gitlistdata.getV_equipment_name())){
+//                        isf=false;
+//                        break;
+//                    }
+//                }
+//                if(isf) {
+//                    getlist.add(listdata);
+//                 }
+//            }
+            //新的查询设备 用分组查找最后创建时间的最大数据为基础
+            List<TEquipmentData> list=TEquipmentDataMapper.selectEquipmentData(null);
 
-            de.setDistinct(true);//去重
-            List<TEquipmentData> list=TEquipmentDataMapper.selectByExample(de);
-            List<TEquipmentData> getlist=new ArrayList<TEquipmentData>();
-            for (int i=0;i<list.size();i++){
-                TEquipmentData listdata=list.get(i);
-                boolean isf=true;
-                for (TEquipmentData gitlistdata :getlist){
-                    if(listdata.getV_equipment_name().equals(gitlistdata.getV_equipment_name())){
-                        isf=false;
-                        break;
-                    }
-                }
-                if(isf) {
-                    getlist.add(listdata);
-                 }
-            }
             Map m=new HashMap();
-            m.put("list",getlist);
+            m.put("list",list);
             m.put("msg","true");
             return m;
         }

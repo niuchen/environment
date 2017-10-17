@@ -97,6 +97,16 @@
       order by ${orderByClause}
     </if>
   </select>
+  <!--查询设备,用最新的创建数分组设备-->
+  <select id="selectEquipmentData" resultMap="BaseResultMap" parameterType="map">
+     select t.`v_equipment_name`,MAX(t.`dtm_create`) dtmcrete,
+  p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011,
+    p012, p013, p014, p015
+  from t_equipment_data t
+group by t.`v_equipment_name`
+
+  </select>
+
   <insert id="insert" parameterType="com.environment.domain.TEquipmentData" >
     insert into t_equipment_data (v_equipment_name, p001, p002, 
       p003, p004, p005, p006, 

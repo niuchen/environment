@@ -26,7 +26,7 @@
 
             </td>
             <td class="input-group date">
-                <input class="form-control layer-date" id="dtm_time" readonly onclick="time('dtm_time')">
+                <input class="form-control layer-date" id="dtm_time">
             </td>
             <td >
                 <a class="lf-btn blue-btn btn-primary" onclick="rygjMap()" >查询</a>
@@ -53,29 +53,74 @@
     map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
    //   map.setCurrentCity("河南");          // 设置地图显示的城市 此项是必须设置的
     map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+
    //    // 编写自定义函数,创建标注
-   function addMarker(point){
+   function addMarker(obj,i){
+       var point = new BMap.Point(obj.p015,obj.p014);
        var marker = new BMap.Marker(point);
+       marker.enableDragging() ;// 开启拖拽功能
+       marker.setTitle(obj.v_equipment_name);//添加标题
+       var label = new BMap.Label(obj.v_equipment_name,{offset:new BMap.Size(-14,-5)});
+        label.setStyle({
+               // color : "#fff",
+         //  fontSize : "16px"
+        //  backgroundColor :"0.05",
+            border:"none"
+         //  ,fontWeight :"bold"
+       });
+       marker.setLabel(label);
+       marker.bmap_stop_group=obj;
+       marker.indexid=i;
+       marker.addEventListener('mouseover', function (e) {// 鼠标移动上图标标识上// 变颜色
+           var p = e.target;
+           p.setTop(true) ;
+       });
+       marker.addEventListener('mouseout', function (e) {// 鼠标移动上图标标识上// 变颜色
+           var p = e.target;
+           p.setTop(false) ;
+       });
+       marker.addEventListener('click', function (e) {// 图标单击
+           var p = e.target;
+           var geoc = new BMap.Geocoder();//地址转中文
+           geoc.getLocation(e.point, function(rs){
+               var addComp = rs.addressComponents;
+               var addvar=addComp.province + "" + addComp.city + "" + addComp.district + "" + addComp.street + "" + addComp.streetNumber;
+               var opts = {
+                   width: 200, // 信息窗口宽度
+                   height: 100, // 信息窗口高度
+                   title:"<p align=\"center\"><strong><span style=\"color:#E53333;\">信息</br>"+addvar+"</br>"+p.getTitle()+"</span></strong></p>", // 信息窗口标题
+                   enableMessage: false//设置允许信息窗发送短息
+               };
+              var htmlctext="<p align=\"center\"><span style=\"color:#000000\">设备名:"+p.bmap_stop_group.v_equipment_name+"</span></p>";
+                var infowindow = new BMap.InfoWindow(htmlctext, opts);
+               p.openInfoWindow(infowindow);
+            });
+
+
+       });
+
        map.addOverlay(marker);
    }
     var aj = $.ajax( {
         url:'Equipment_data/Equipment_dateList.htm',// 跳转到 action
-        data:{
-        },
+        data:{},
         type:'post',
         cache:false,
         dataType:'json',
         success:function(data) {
             if(data.msg =="true" ){
                // var json_data =  JSON.parse(data);
-                alert(data.list.length);
+               // alert(data.list.length);
                 for(var i=0;i<data.list.length;i++){
                     var obj=data.list[i];
                   //  alert(obj.p015+" "+obj.p014);
 
-                    var point = new BMap.Point(obj.p015,obj.p014);
-
-                    addMarker(point);
+                    addMarker(obj,i);
+                    if(i+1>=data.list.length){
+                        //移动地图位置
+                        map.panTo(new BMap.Point(obj.p015,obj.p014))
+                    }
                 }
             }else{
                 alert("读取失败");
@@ -99,6 +144,10 @@
 //        var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
 //        addMarker(point);
 //    }
+
+function  rygjMap(){
+    alert($("#dtm_time").val());
+}
 </script>
 
 </html>
