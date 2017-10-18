@@ -84,7 +84,9 @@
                     <li>
                         <a class="J_menuItem" href="baidumap/index.htm"><i class="fa fa-columns"></i> <span class="nav-label">地图</span></a>
                     </li>
-
+                    <li>
+                        <a class="J_menuItem" href="bb/index_v5.html"><i class="fa fa-columns"></i> <span class="nav-label">工作台</span></a>
+                    </li>
                 </ul>
             </div>
         </nav>

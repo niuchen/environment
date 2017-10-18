@@ -18,7 +18,7 @@
     <result column="p013" property="p013" jdbcType="DOUBLE" />
     <result column="p014" property="p014" jdbcType="DOUBLE" />
     <result column="p015" property="p015" jdbcType="DOUBLE" />
-    <result column="dtm_create" property="dtm_create" jdbcType="TIMESTAMP" />
+    <result column="dtm_create" property="dtm_create" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -99,7 +99,7 @@
   </select>
   <!--查询设备,用最新的创建数分组设备-->
   <select id="selectEquipmentData" resultMap="BaseResultMap" parameterType="map">
-     select t.`v_equipment_name`,MAX(t.`dtm_create`) dtmcrete,
+     select t.`v_equipment_name`,MAX(t.`dtm_create`) dtm_create,
   p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011,
     p012, p013, p014, p015
   from t_equipment_data t

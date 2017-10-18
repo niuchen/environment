@@ -10,7 +10,7 @@
 <!-- 树组件 -->
 <link rel="stylesheet" href="js/plugins/zNodes/css/zTreeStyle/zTreeStyle.css"	type="text/css" />
 <!-- 弹窗layer-->
-<link rel="stylesheet" href="layer/skin/default/layer.css"	type="text/css" />
+<link rel="stylesheet" href="js/layer/skin/default/layer.css"	type="text/css" />
  <!-- 下拉框组件 -->
 <link rel="stylesheet" 	href="css/plugins/bootstrap-select-1.12.2/bootstrap-select.min.css" type="text/css" >
 <link rel="stylesheet"	href="js/plugins/layer/laydate-v1.1/laydate/skins/default/laydate.css">

@@ -35,7 +35,7 @@ public class TEquipmentData {
 
     private Double p015;//纬度
 
-    private Date dtm_create;
+    private String dtm_create;
 
     public String getV_equipment_name() {
         return v_equipment_name;
@@ -165,11 +165,11 @@ public class TEquipmentData {
         this.p015 = p015;
     }
 
-    public Date getDtm_create() {
+    public String getDtm_create() {
         return dtm_create;
     }
 
-    public void setDtm_create(Date dtm_create) {
+    public void setDtm_create(String dtm_create) {
         this.dtm_create = dtm_create;
     }
 }
