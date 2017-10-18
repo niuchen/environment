@@ -47,6 +47,13 @@
 
 <!-- <script type="text/javascript" src="szwqbts/js/baidumap.js"></script>百度地图 -->
 <script>
+    var text="<div class='input-group'>" +
+            "<input type=\"text\" style='display:none' id='obj_id'  name='"+form_item_id+"_id' /> " +
+            "<input type=\"text\"  placeholder='"+defaultvalue+"' class=\"form-control proposer\" id='"+form_item_id+"'  name='"+form_item_id+"' />  " +
+            "  <div class=\"input-group-btn\">   <button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\">  " +
+            " <span class=\"caret\"></span>   </button> " +
+            " <ul class=\"dropdown-menu dropdown-menu-right\" role=\"menu\">  </ul>   </div>  "
+     alert(text);
    //  百度地图API功能
     var map = new BMap.Map("allmap");    // 创建Map实例
    map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  // 初始化地图,设置中心点坐标和地图级别
@@ -147,6 +154,39 @@
 
 function  rygjMap(){
     alert($("#dtm_time").val());
+    var bsSuggest= $("#"+form_item_id).bsSuggest({
+        //url: "/rest/sys/getuserlist?keyword=",
+        //url: "AllconpentAction/selectUserInfobyName.htm?v_real_name=",
+        url:pathUrl+m_id+"v_real_name=",
+        effectiveFields: ["v_real_name", "v_dept_name"],  //有效显示于列表中的字段，非有效字段都会过滤，默认全部。
+        searchFields: [ "v_real_name"],  //有效搜索字段，从前端搜索过滤数据时使用，但不一定显示在列表中。effectiveFields 配置字段也会用于搜索过滤
+        effectiveFieldsAlias:{v_real_name: "姓名",v_dept_name: "部门"}, //有效字段的别名对象，用于 header 的显示
+        allowNoKeyword: false,  //是否允许无关键字时请求数据
+        getDataMethod: 'firstByUrl',  //获取数据的方式，url：一直从url请求；data：从 options.data 获取；firstByUrl：第一次从Url获取全部数据，之后从options.data获取
+        clearable: true,        // 是否可清除已输入的内容
+        idField: "i_user_id",
+        keyField: "v_real_name"
+    }).on('onDataRequestSuccess', function (e, result) {
+        //alert(result);
+        //加载数据后onDataRequestSuccess: 当 AJAX 请求数据成功时触发，并传回结果到第二个参数
+        console.log('onDataRequestSuccess: ', result);
+    }).on('onSetSelectValue', function (e, keyword) {
+        //onSetSelectValue：当从下拉菜单选取值时触发，并传回设置的数据到第二个参数
+        var cityObjid = $("#"+form_item_id+"_id");
+        cityObjid.attr("value", keyword.id);
+        console.log('onSetSelectValue: ', keyword);
+    }).on('onUnsetSelectValue', function (e) {
+        //onUnsetSelectValue：当设置了 idField，且自由输入内容时触发（与背景警告色显示同步）
+        //alert(e);
+        var cityObjid = $("#"+form_item_id+"_id");
+        cityObjid.attr("value","");
+        console.log("onUnsetSelectValue");
+    }).on('onDeleteValue', function (e) {
+        //点击清空按钮触发
+        var cityObjid = $("#"+form_item_id+"_id");
+        cityObjid.attr("value","");
+        console.log("onDeleteValue");
+    })  ;
 }
 </script>
 
