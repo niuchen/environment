@@ -62,7 +62,16 @@
 
                 </td>
                 <td class="input-group date">
-                    <input class="form-control layer-date" id="dtm_time">
+                    <div class="input-group" style="width:300px">
+                        <input type="text" class="form-control" id="equipment_id">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+                        </div>
+                        <!-- /btn-group -->
+                    </div>
                 </td>
                 <td >
                     <a class="lf-btn blue-btn btn-primary" onclick="rygjMap()" >查询</a>
@@ -81,10 +90,10 @@
         <p class="item-row"><span class="color" style="background-color: rgb(126,0,35);">严重污染</span></p>
     </div>
     <div class="data-container" style="display: none;">
-        <div   style=" z-index:999;width: 25px; height: 25px; line-height: 25px; text-align: center;
+        <img  src="img/gis/close.jpg" style="z-index:999;width: 25px; height: 25px; line-height: 25px; text-align: center;
          position: absolute; top: 2px; right: 2px; color: rgb(111,111,110);
-          font-size: 16px; cursor: pointer; background:url(img/gis/close.jpg)"
-               onclick="$('div.warpper > div.data-container').hide()"></div>
+          font-size: 16px; cursor: pointer;" onclick="$('div.warpper > div.data-container').hide()"></img>
+
 
         <div class="top-lay">
             <#--<div class="item-row-aqi">-->
@@ -98,11 +107,11 @@
             <div class="item-row"><span class="item-row-title">传感器状态</sub></span><span id="itemp001" class="item-row-txt item-row-txt-pm25"></span><span class="item-row-unit"></span></div>
             <div class="item-row"><span class="item-row-title">PM<sub>2.5</sub></span><span id="itemp002" class="item-row-txt item-row-txt-pm10"></span><span class="item-row-unit">μg/m<sup>3</sup></span></div>
             <div class="item-row"><span class="item-row-title">PM<sub>10</sub></span><span id="itemp003" class="item-row-txt item-row-txt-so2"></span><span class="item-row-unit">μg/m<sup>3</sup></span></div>
-            <div class="item-row"><span class="item-row-title">风速</span><span id="itemp004" class="item-row-txt item-row-txt-no2"></span><span class="item-row-unit"></span></div>
-            <div class="item-row"><span class="item-row-title">风向</span><span id="itemp005" class="item-row-txt item-row-txt-co"></span><span class="item-row-unit"></span></div>
-            <div class="item-row"><span class="item-row-title">温度</span><span id="itemp006" class="item-row-txt item-row-txt-co"></span><span class="item-row-unit"></span></div>
-            <div class="item-row"><span class="item-row-title">湿度</span><span id="itemp007" class="item-row-txt item-row-txt-co"></span><span class="item-row-unit"></span></div>
-            <div class="item-row"><span class="item-row-title">噪音</span><span id="itemp008" class="item-row-txt item-row-txt-o3"></span><span class="item-row-unit"></span></div>
+            <div class="item-row"><span class="item-row-title">风速</span><span id="itemp004" class="item-row-txt item-row-txt-no2"></span><span class="item-row-unit">M/S</span></div>
+            <div class="item-row"><span class="item-row-title">风向</span><span id="itemp005" class="item-row-txt item-row-txt-co"></span><span class="item-row-unit">方向</span></div>
+            <div class="item-row"><span class="item-row-title">温度</span><span id="itemp006" class="item-row-txt item-row-txt-co"></span><span class="item-row-unit">摄氏度</span></div>
+            <div class="item-row"><span class="item-row-title">湿度</span><span id="itemp007" class="item-row-txt item-row-txt-co"></span><span class="item-row-unit">RH%</span></div>
+            <div class="item-row"><span class="item-row-title">噪音</span><span id="itemp008" class="item-row-txt item-row-txt-o3"></span><span class="item-row-unit">分贝</span></div>
 
         </div>
     </div>
@@ -150,17 +159,37 @@
             success: function (data) {
                 if (data.msg == "true") {
                     // var json_data =  JSON.parse(data);
-                    // alert(data.list.length);
+                 var dataList = {value: []};
                     for (var i = 0; i < data.list.length; i++) {
                         var obj = data.list[i];
-                        //  alert(obj.p015+" "+obj.p014);
 
                         addMarker(obj, i);
+                        dataList.value.push({
+                            v_equipment_name: obj.v_equipment_name,
+                            dtm_create: obj.dtm_create
+                        });
                         if (i + 1 >= data.list.length) {
                             //移动地图位置
                             map.panTo(new BMap.Point(obj.p015, obj.p014))
                         }
                     }
+
+                    $("#equipment_id").bsSuggest({
+                        indexId: 0,  //data.value 的第几个数据，作为input输入框的内容
+                        indexKey:0, //data.value 的第几个数据，作为input输入框的内容
+                        searchFields: [ "v_equipment_name"],  //有效搜索字段，
+                        effectiveFields: ["v_equipment_name", "dtm_create"],
+                        effectiveFieldsAlias:{v_equipment_name: "设备号",dtm_create: "最新数据时间"}, //有效字段的别名对象，用于 header 的显示
+                        clearable: true,
+                        data: dataList
+                    }).on('onDataRequestSuccess', function (e, result) {
+                        console.log('从 json.data 参数中获取，不会触发 onDataRequestSuccess 事件', result);
+                    }).on('onSetSelectValue', function (e, keyword, data) {
+                        console.log('onSetSelectValue: ', keyword, data);
+                    }).on('onUnsetSelectValue', function () {
+                        console.log("onUnsetSelectValue");
+                    });
+
                 } else {
                     alert("读取失败");
                 }
@@ -184,9 +213,7 @@
        marker.setTitle(obj.v_equipment_name);//添加标题
        var label = new BMap.Label("设备号:"+obj.v_equipment_name,{offset:new BMap.Size(-14,-5)});
         label.setStyle({
-               // color : "#fff",
-         //  fontSize : "16px"
-        //  backgroundColor :"0.05",
+               // color : "#fff",//  fontSize : "16px"//  backgroundColor :"0.05",
             border:"none"
          //  ,fontWeight :"bold"
        });
@@ -269,7 +296,7 @@
         $("div.data-container").show();
         $(".item-row-txt-aqi").text(data.AQI);
         $(".item-row-txt-name").text(addvar);
-        $(".item-row-txt-primary").text("首要污染物：PM2.5");
+        $(".item-row-txt-primary").text("污染物级别监控指标：PM2.5");
         $(".item-row-txt-time").text("发布时间："+data.dtm_create);
         $("#itemp001").text(data.p001);
             $("#itemp002").text(data.p002);
@@ -287,40 +314,20 @@
     }
 
 function  rygjMap(){
-    alert($("#dtm_time").val());
-    var bsSuggest= $("#"+form_item_id).bsSuggest({
-        //url: "/rest/sys/getuserlist?keyword=",
-        //url: "AllconpentAction/selectUserInfobyName.htm?v_real_name=",
-        url:pathUrl+m_id+"v_real_name=",
-        effectiveFields: ["v_real_name", "v_dept_name"],  //有效显示于列表中的字段，非有效字段都会过滤，默认全部。
-        searchFields: [ "v_real_name"],  //有效搜索字段，从前端搜索过滤数据时使用，但不一定显示在列表中。effectiveFields 配置字段也会用于搜索过滤
-        effectiveFieldsAlias:{v_real_name: "姓名",v_dept_name: "部门"}, //有效字段的别名对象，用于 header 的显示
-        allowNoKeyword: false,  //是否允许无关键字时请求数据
-        getDataMethod: 'firstByUrl',  //获取数据的方式，url：一直从url请求；data：从 options.data 获取；firstByUrl：第一次从Url获取全部数据，之后从options.data获取
-        clearable: true,        // 是否可清除已输入的内容
-        idField: "i_user_id",
-        keyField: "v_real_name"
-    }).on('onDataRequestSuccess', function (e, result) {
-        //alert(result);
-        //加载数据后onDataRequestSuccess: 当 AJAX 请求数据成功时触发，并传回结果到第二个参数
-        console.log('onDataRequestSuccess: ', result);
-    }).on('onSetSelectValue', function (e, keyword) {
-        //onSetSelectValue：当从下拉菜单选取值时触发，并传回设置的数据到第二个参数
-        var cityObjid = $("#"+form_item_id+"_id");
-        cityObjid.attr("value", keyword.id);
-        console.log('onSetSelectValue: ', keyword);
-    }).on('onUnsetSelectValue', function (e) {
-        //onUnsetSelectValue：当设置了 idField，且自由输入内容时触发（与背景警告色显示同步）
-        //alert(e);
-        var cityObjid = $("#"+form_item_id+"_id");
-        cityObjid.attr("value","");
-        console.log("onUnsetSelectValue");
-    }).on('onDeleteValue', function (e) {
-        //点击清空按钮触发
-        var cityObjid = $("#"+form_item_id+"_id");
-        cityObjid.attr("value","");
-        console.log("onDeleteValue");
-    })  ;
+    var eid=$("#equipment_id").val();
+
+    var markers = map.getOverlays();
+    for (var i = 0; i < markers.length; i++) {
+
+        if (markers[i].toString() == "[object Marker]") {
+            markers[i].setAnimation(null);
+           if(eid==markers[i].getTitle()){
+               map.panTo(markers[i].getPosition());
+               markers[i].setAnimation(BMAP_ANIMATION_BOUNCE);
+           }
+
+        }
+    }
 }
 </script>
 

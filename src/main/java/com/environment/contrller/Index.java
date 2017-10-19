@@ -19,7 +19,7 @@ import java.util.Map;
 @Controller
 @Scope("prototype")
 @Api(value = "index", description = "系统入口" )
-public class Index {
+public class Index extends BaseTOAction{
 
 
 
@@ -64,6 +64,35 @@ public class Index {
     public ModelAndView quit(){
         ModelAndView mv= new ModelAndView();
         mv.setViewName("index");
+        return mv;
+    }
+
+
+    @RequestMapping("/baidumap/index.htm")
+    @ApiOperation(value = "进入地图")
+    public ModelAndView baidumapindex(HttpServletRequest request , HttpServletResponse response){
+        //org.springframework.web.servlet.support.RequestContext d= (RequestContext) request;
+        // d.getContextPath()
+        ModelAndView mv= new ModelAndView();
+        mv.setViewName("/baidumap/baidumap");
+        Map map=new HashMap();
+        map.put("basepath",this.getBasepath());
+
+        mv.addAllObjects(map);
+        return mv;
+    }
+
+    @RequestMapping("/eqdateselect/index.htm")
+    @ApiOperation(value = "进入数据查询")
+    public ModelAndView eqdateselect(HttpServletRequest request , HttpServletResponse response){
+        //org.springframework.web.servlet.support.RequestContext d= (RequestContext) request;
+        // d.getContextPath()
+        ModelAndView mv= new ModelAndView();
+        mv.setViewName("/eqdateselect/eqdateselect");
+        Map map=new HashMap();
+        map.put("basepath",this.getBasepath());
+
+        mv.addAllObjects(map);
         return mv;
     }
 }

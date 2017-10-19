@@ -7,7 +7,7 @@
     <result column="p002" property="p002" jdbcType="DOUBLE" />
     <result column="p003" property="p003" jdbcType="DOUBLE" />
     <result column="p004" property="p004" jdbcType="DOUBLE" />
-    <result column="p005" property="p005" jdbcType="DOUBLE" />
+    <result column="p005" property="p005" jdbcType="VARCHAR" />
     <result column="p006" property="p006" jdbcType="DOUBLE" />
     <result column="p007" property="p007" jdbcType="DOUBLE" />
     <result column="p008" property="p008" jdbcType="DOUBLE" />
@@ -100,9 +100,10 @@
   <!--查询设备,用最新的创建数分组设备-->
   <select id="selectEquipmentData" resultMap="BaseResultMap" parameterType="map">
      select t.`v_equipment_name`,MAX(t.`dtm_create`) dtm_create,
-  p001, p002, p003, p004, p005, p006, p007, p008, p009, p010, p011,
+  p001, p002, p003, p004,w.`v_wind_direct_name` p005, p006, p007, p008, p009, p010, p011,
     p012, p013, p014, p015
   from t_equipment_data t
+  left join `t_wind_direct_dic` w on w.`i_wind_direct_id`=t.`p005`
 group by t.`v_equipment_name`
 
   </select>

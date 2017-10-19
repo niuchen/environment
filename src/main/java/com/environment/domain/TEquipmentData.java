@@ -13,7 +13,7 @@ public class TEquipmentData {
 
     private Double p004;
 
-    private Double p005;
+    private String p005;
 
     private Double p006;
 
@@ -77,11 +77,11 @@ public class TEquipmentData {
         this.p004 = p004;
     }
 
-    public Double getP005() {
+    public String getP005() {
         return p005;
     }
 
-    public void setP005(Double p005) {
+    public void setP005(String p005) {
         this.p005 = p005;
     }
 
