@@ -48,6 +48,15 @@
 <#include "/public_js.ftl" >
 <script type="text/javascript" src="js/necomponent/create_formobj.js"></script>
 <script type="text/javascript">
+    var queryParams={
+    };
+    // 得到查询的参数
+     var queryParamsfunction = function(params) {
+         queryParams.limit=params.limit;
+         queryParams.offset=params.offset;
+        var temp = queryParams;
+        return temp;
+    };
     $(function ($) {
         //初始化日期组件
         getdaterangepicker("txt_search_departmentname");
@@ -63,7 +72,7 @@
             sortable : true, // 是否启用排序
             sortOrder : "asc", // 排序方式
             // classes:'table table-hover table-no-bordered',
-            //  queryParams : oTableInit.queryParams,// 传递参数（*）
+            queryParams :queryParamsfunction,// 传递参数（*）
             sidePagination : "server", // 分页方式：client客户端分页，server服务端分页（*）
             pageNumber : 1, // 初始化加载第一页，默认第一页
             pageSize : 10, // 每页的记录行数（*）
@@ -139,13 +148,13 @@
             ]
         });
 
-
         $("#btn_query").click(function() {
             var date= $("#txt_search_departmentname").val();
 
-            var queryParams={
+              queryParams={
                 date:date
             };
+
             //查询加载表格
             $('#tb_departments').bootstrapTable('refresh', {
                 url: 'Equipment_data/SEquipment_dateList.htm',
