@@ -23,7 +23,7 @@
                     <#--</div>-->
                     <div class="col-sm-4" style="text-align:left;">
                         <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询</button>
-                        <button type="button"  id="btn_query" class="btn btn-primary">导出</button>
+                        <button type="button"  id="btn_export" class="btn btn-primary">导出</button>
                      </div>
 
                 </div>
@@ -50,6 +50,7 @@
 <script type="text/javascript">
     var queryParams={
     };
+    var exportParam=null;
     // 得到查询的参数
      var queryParamsfunction = function(params) {
          queryParams.limit=params.limit;
@@ -114,7 +115,7 @@
                 title : 'PM2.5'
             }, {
                 field : 'p003',
-                title : 'pm10'
+                title : 'PM10'
             }, {
                 field : 'p004',
                 title : '风速'
@@ -133,7 +134,7 @@
                 title : '噪音'
             }, {
                 field : 'p009',
-                title : 'pm100'
+                title : 'PM100'
             }, {
                 field : 'p010',
                 title : '气压'
@@ -147,6 +148,15 @@
 
             ]
         });
+       $("#btn_export").click(function() {
+           if(exportParam!=null){
+               var url="Equipment_data/SEquipment_dateExport.htm?"+exportParam;
+               var url2="Equipment_data/exportTag.htm?"+exportParam;
+               bsuExport(url,url2,$("#btn_export"));
+           }else{
+               layer.msg('请先查询出您想要的结果!');
+           }
+        });
 
         $("#btn_query").click(function() {
             var date= $("#txt_search_departmentname").val();
@@ -154,7 +164,7 @@
               queryParams={
                 date:date
             };
-
+            exportParam=parseParam(queryParams);
             //查询加载表格
             $('#tb_departments').bootstrapTable('refresh', {
                 url: 'Equipment_data/SEquipment_dateList.htm',

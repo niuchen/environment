@@ -88,7 +88,10 @@
                         <a class="J_menuItem" href="eqdateselect/index.htm"><i class="fa fa-columns"></i> <span class="nav-label">数据查询</span></a>
                     </li>
                     <li>
-                        <a class="J_menuItem" href="bb/index_v5.html"><i class="fa fa-columns"></i> <span class="nav-label">工作台</span></a>
+                    <a class="J_menuItem" href="bb/index_v5.html"><i class="fa fa-columns"></i> <span class="nav-label">工作台</span></a>
+                </li>
+                    <li>
+                        <a class="J_menuItem" href="workbench/workbench.htm"><i class="fa fa-columns"></i> <span class="nav-label">新工作台</span></a>
                     </li>
                 </ul>
             </div>

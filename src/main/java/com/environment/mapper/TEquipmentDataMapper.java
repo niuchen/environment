@@ -15,6 +15,7 @@ public interface TEquipmentDataMapper {
     List<TEquipmentData> selectByExample(TEquipmentDataExample example);
     //查询设备,用最新的创建数分组设备
     List<TEquipmentData> selectEquipmentData(Map map);
+
     //分页查询历史数据
     List<TEquipmentData> selectSEquipmentData(Map map);
 

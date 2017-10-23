@@ -95,4 +95,19 @@ public class Index extends BaseTOAction{
         mv.addAllObjects(map);
         return mv;
     }
+
+    @RequestMapping("/workbench/index.htm")
+    @ApiOperation(value = "进入工作台查询")
+    public ModelAndView workbench(HttpServletRequest request , HttpServletResponse response){
+        //org.springframework.web.servlet.support.RequestContext d= (RequestContext) request;
+        // d.getContextPath()
+        ModelAndView mv= new ModelAndView();
+        mv.setViewName("/workbench/workbench");
+        Map map=new HashMap();
+        map.put("basepath",this.getBasepath());
+
+        mv.addAllObjects(map);
+        return mv;
+    }
+
 }
