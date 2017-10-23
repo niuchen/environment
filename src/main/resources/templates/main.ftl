@@ -145,8 +145,7 @@
                 <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="heoll.html" frameborder="0" data-id="heoll.html" seamless></iframe>
             </div>
             <div class="footer">
-                <div class="pull-right">&copy; 2017</a>
-                </div>
+                <div class="pull-right">&copy; 2017</div>
             </div>
         </div>
         <!--右侧部分结束-->

@@ -137,12 +137,7 @@
         new BMap.Icon("img/gis/6.png", new BMap.Size(32, 32))
     ];
     $(function ($) {
-        var text="<div class='input-group'>" +
-                "<input type=\"text\" style='display:none' id='obj_id'  name='form_item_id_id' /> " +
-                "<input type=\"text\"  placeholder='defaultvalue' class=\"form-control proposer\" id='form_item_id'  name='form_item_id' />  " +
-                "  <div class=\"input-group-btn\">   <button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\">  " +
-                " <span class=\"caret\"></span>   </button> " +
-                " <ul class=\"dropdown-menu dropdown-menu-right\" role=\"menu\">  </ul>   </div>  "
+
 
         //  百度地图API功能
 
@@ -249,7 +244,6 @@
 
 
        });
-
        map.addOverlay(marker);
    }
     function getAirLevel_PM25(airIndex) {

@@ -405,7 +405,7 @@ function getdaterangepicker(form_item_id,timePicker){
 		timePicker=true;
 		format='YYYY/MM/DD HH:mm';
 	}
-  
+
         var ranges = {
          //  '清空': [null, null],
            '今天': [moment().startOf('days'), moment().endOf('days')],
@@ -432,9 +432,9 @@ function getdaterangepicker(form_item_id,timePicker){
 	    "format": format,
 	    "timePicker": timePicker,
 	    "timePicker24Hour": timePicker,
-	    "autoUpdateInput":false,//自动更新输入  变成必填了. 而且会自动纠错,自动输入默认日期
-//	    "startDate": null,
-//	     "endDate": null,
+	    "autoUpdateInput":true,//自动更新输入  变成必填了. 而且会自动纠错,自动输入默认日期
+        "startDate": moment().subtract(29, 'days').startOf('days'),
+        "endDate":  moment().endOf('days'),
 	    "linkedCalendars": false,// 与日历 
 	   "alwaysShowCalendars": true,//总是显示日历 
 	 //   "opens": "center", //center left right,
@@ -444,7 +444,7 @@ function getdaterangepicker(form_item_id,timePicker){
        // endDate: moment().endOf('day')
         
 	}, function(start, end, label) {
-	 
+
          var s = start.format(format);
         var e = end.format(format);
         var t = s + '-' + e;
@@ -467,10 +467,9 @@ function getdaterangepicker(form_item_id,timePicker){
 //     });
 //
 	$('#'+form_item_id).on('cancel.daterangepicker', function(ev, picker) {
-         $(this).val('');
+        $(this).val('');
      });
 	$('#'+form_item_id).on('show.daterangepicker', function(ev, picker) {
- 		 
 			if( $(this).val()==null||$(this).val()==""){
 	 		  var s = moment().startOf('days').format(format);
 		        var e = moment().endOf('days').format(format);
