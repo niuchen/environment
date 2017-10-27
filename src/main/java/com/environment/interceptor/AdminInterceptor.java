@@ -1,6 +1,6 @@
 package com.environment.interceptor;
 
-import com.environment.domain.UserInfo;
+import com.environment.mypuls.entity.TUserInfo;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,7 +15,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 		Object obj = request.getSession().getAttribute("sys_user_key");
 		String xrequest = request.getHeader("x-requested-with");		
 
-		if (obj == null || !(obj instanceof UserInfo)) {
+		if (obj == null || !(obj instanceof TUserInfo)) {
 			if("XMLHttpRequest".equalsIgnoreCase(xrequest)) {//拦截AJAX请求
 				response.setHeader("sessionstatus", "timeout");
 			}else {

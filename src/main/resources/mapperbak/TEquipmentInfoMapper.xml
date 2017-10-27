@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.environment.mapper.TEquipmentInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.environment.domain.TEquipmentInfo" >
+    <id column="i_equipment_id" property="i_equipment_id" jdbcType="INTEGER" />
+    <result column="v_equipment_name" property="v_equipment_name" jdbcType="VARCHAR" />
+    <result column="v_equipment_type" property="v_equipment_type" jdbcType="VARCHAR" />
+    <result column="i_euiqpment_type_id" property="i_euiqpment_type_id" jdbcType="INTEGER" />
+    <result column="v_equipment_check_code" property="v_equipment_check_code" jdbcType="VARCHAR" />
+    <result column="dtm_create" property="dtm_create" jdbcType="TIMESTAMP" />
+    <result column="v_company" property="v_company" jdbcType="VARCHAR" />
+    <result column="v_phone" property="v_phone" jdbcType="VARCHAR" />
+    <result column="v_address" property="v_address" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    i_equipment_id, v_equipment_name, v_equipment_type, i_euiqpment_type_id, v_equipment_check_code, 
+    dtm_create, v_company, v_phone, v_address
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.environment.domain.TEquipmentInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_equipment_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_equipment_info
+    where i_equipment_id = #{i_equipment_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_equipment_info
+    where i_equipment_id = #{i_equipment_id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.environment.domain.TEquipmentInfo" >
+    insert into t_equipment_info (i_equipment_id, v_equipment_name, 
+      v_equipment_type, i_euiqpment_type_id, 
+      v_equipment_check_code, dtm_create, v_company, 
+      v_phone, v_address)
+    values (#{i_equipment_id,jdbcType=INTEGER}, #{v_equipment_name,jdbcType=VARCHAR}, 
+      #{v_equipment_type,jdbcType=VARCHAR}, #{i_euiqpment_type_id,jdbcType=INTEGER}, 
+      #{v_equipment_check_code,jdbcType=VARCHAR}, #{dtm_create,jdbcType=TIMESTAMP}, #{v_company,jdbcType=VARCHAR}, 
+      #{v_phone,jdbcType=VARCHAR}, #{v_address,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.environment.domain.TEquipmentInfo" >
+    insert into t_equipment_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="i_equipment_id != null" >
+        i_equipment_id,
+      </if>
+      <if test="v_equipment_name != null" >
+        v_equipment_name,
+      </if>
+      <if test="v_equipment_type != null" >
+        v_equipment_type,
+      </if>
+      <if test="i_euiqpment_type_id != null" >
+        i_euiqpment_type_id,
+      </if>
+      <if test="v_equipment_check_code != null" >
+        v_equipment_check_code,
+      </if>
+      <if test="dtm_create != null" >
+        dtm_create,
+      </if>
+      <if test="v_company != null" >
+        v_company,
+      </if>
+      <if test="v_phone != null" >
+        v_phone,
+      </if>
+      <if test="v_address != null" >
+        v_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="i_equipment_id != null" >
+        #{i_equipment_id,jdbcType=INTEGER},
+      </if>
+      <if test="v_equipment_name != null" >
+        #{v_equipment_name,jdbcType=VARCHAR},
+      </if>
+      <if test="v_equipment_type != null" >
+        #{v_equipment_type,jdbcType=VARCHAR},
+      </if>
+      <if test="i_euiqpment_type_id != null" >
+        #{i_euiqpment_type_id,jdbcType=INTEGER},
+      </if>
+      <if test="v_equipment_check_code != null" >
+        #{v_equipment_check_code,jdbcType=VARCHAR},
+      </if>
+      <if test="dtm_create != null" >
+        #{dtm_create,jdbcType=TIMESTAMP},
+      </if>
+      <if test="v_company != null" >
+        #{v_company,jdbcType=VARCHAR},
+      </if>
+      <if test="v_phone != null" >
+        #{v_phone,jdbcType=VARCHAR},
+      </if>
+      <if test="v_address != null" >
+        #{v_address,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_equipment_info
+    <set >
+      <if test="record.i_equipment_id != null" >
+        i_equipment_id = #{record.i_equipment_id,jdbcType=INTEGER},
+      </if>
+      <if test="record.v_equipment_name != null" >
+        v_equipment_name = #{record.v_equipment_name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.v_equipment_type != null" >
+        v_equipment_type = #{record.v_equipment_type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.i_euiqpment_type_id != null" >
+        i_euiqpment_type_id = #{record.i_euiqpment_type_id,jdbcType=INTEGER},
+      </if>
+      <if test="record.v_equipment_check_code != null" >
+        v_equipment_check_code = #{record.v_equipment_check_code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dtm_create != null" >
+        dtm_create = #{record.dtm_create,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.v_company != null" >
+        v_company = #{record.v_company,jdbcType=VARCHAR},
+      </if>
+      <if test="record.v_phone != null" >
+        v_phone = #{record.v_phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.v_address != null" >
+        v_address = #{record.v_address,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_equipment_info
+    set i_equipment_id = #{record.i_equipment_id,jdbcType=INTEGER},
+      v_equipment_name = #{record.v_equipment_name,jdbcType=VARCHAR},
+      v_equipment_type = #{record.v_equipment_type,jdbcType=VARCHAR},
+      i_euiqpment_type_id = #{record.i_euiqpment_type_id,jdbcType=INTEGER},
+      v_equipment_check_code = #{record.v_equipment_check_code,jdbcType=VARCHAR},
+      dtm_create = #{record.dtm_create,jdbcType=TIMESTAMP},
+      v_company = #{record.v_company,jdbcType=VARCHAR},
+      v_phone = #{record.v_phone,jdbcType=VARCHAR},
+      v_address = #{record.v_address,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.environment.domain.TEquipmentInfo" >
+    update t_equipment_info
+    <set >
+      <if test="v_equipment_name != null" >
+        v_equipment_name = #{v_equipment_name,jdbcType=VARCHAR},
+      </if>
+      <if test="v_equipment_type != null" >
+        v_equipment_type = #{v_equipment_type,jdbcType=VARCHAR},
+      </if>
+      <if test="i_euiqpment_type_id != null" >
+        i_euiqpment_type_id = #{i_euiqpment_type_id,jdbcType=INTEGER},
+      </if>
+      <if test="v_equipment_check_code != null" >
+        v_equipment_check_code = #{v_equipment_check_code,jdbcType=VARCHAR},
+      </if>
+      <if test="dtm_create != null" >
+        dtm_create = #{dtm_create,jdbcType=TIMESTAMP},
+      </if>
+      <if test="v_company != null" >
+        v_company = #{v_company,jdbcType=VARCHAR},
+      </if>
+      <if test="v_phone != null" >
+        v_phone = #{v_phone,jdbcType=VARCHAR},
+      </if>
+      <if test="v_address != null" >
+        v_address = #{v_address,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where i_equipment_id = #{i_equipment_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.environment.domain.TEquipmentInfo" >
+    update t_equipment_info
+    set v_equipment_name = #{v_equipment_name,jdbcType=VARCHAR},
+      v_equipment_type = #{v_equipment_type,jdbcType=VARCHAR},
+      i_euiqpment_type_id = #{i_euiqpment_type_id,jdbcType=INTEGER},
+      v_equipment_check_code = #{v_equipment_check_code,jdbcType=VARCHAR},
+      dtm_create = #{dtm_create,jdbcType=TIMESTAMP},
+      v_company = #{v_company,jdbcType=VARCHAR},
+      v_phone = #{v_phone,jdbcType=VARCHAR},
+      v_address = #{v_address,jdbcType=VARCHAR}
+    where i_equipment_id = #{i_equipment_id,jdbcType=INTEGER}
+  </update>
+</mapper>

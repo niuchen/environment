@@ -25,7 +25,7 @@
 <body class="fixed-sidebar full-height-layout gray-bg skin-1" style="overflow:hidden">
     <div id="wrapper">
         <!--左侧导航开始-->
-        <nav class="navbar-default navbar-static-side" role="navigation">
+        <nav class="navbar-default navbar-static-side" style="background: #0c5572;" role="navigation">
             <div class="nav-close"><i class="fa fa-times-circle"></i>
             </div>
             <div class="sidebar-collapse">
@@ -35,19 +35,19 @@
                             <span><img alt="image" class="img-circle" src="img/profile_small.jpg" /></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>
+                               <span class="block m-t-xs"><strong class="font-bold">管理员</strong></span>
                                 <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
-                                </li>
-                                <li><a class="J_menuItem" href="profile.html">个人资料</a>
-                                </li>
-                                <li><a class="J_menuItem" href="contacts.html">联系我们</a>
-                                </li>
-                                <li><a class="J_menuItem" href="mailbox.html">信箱</a>
-                                </li>
+                                <#--<li><a class="J_menuItem" href="form_avatar.html">修改头像</a>-->
+                                <#--</li>-->
+                                <#--<li><a class="J_menuItem" href="profile.html">个人资料</a>-->
+                                <#--</li>-->
+                                <#--<li><a class="J_menuItem" href="contacts.html">联系我们</a>-->
+                                <#--</li>-->
+                                <#--<li><a class="J_menuItem" href="mailbox.html">信箱</a>-->
+                                <#--</li>-->
                                 <li class="divider"></li>
                                 <li><a href="quit.htm">安全退出</a>
                                 </li>
@@ -56,43 +56,41 @@
                         <div class="logo-element">环保
                         </div>
                     </li>
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-home"></i>
-                            <span class="nav-label">主页</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a class="J_menuItem" href="index_v1.html" data-index="0">主页示例一</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="index_v2.html">主页示例二</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="index_v3.html">主页示例三</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="index_v4.html">主页示例四</a>
-                            </li>
-                            <li>
-                                <a href="index_v5.html" target="_blank">主页示例五</a>
-                            </li>
-                        </ul>
-
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="baidumap/index.htm"><i class="fa fa-columns"></i> <span class="nav-label">地图</span></a>
-                    </li>
-                    <li>
-                        <a class="J_menuItem" href="eqdateselect/index.htm"><i class="fa fa-columns"></i> <span class="nav-label">数据查询</span></a>
-                    </li>
-                    <li>
-                    <a class="J_menuItem" href="bb/index_v5.html"><i class="fa fa-columns"></i> <span class="nav-label">工作台</span></a>
+                    <#--<li>-->
+                        <#--<a href="#">-->
+                            <#--<i class="fa fa-home"></i>-->
+                            <#--<span class="nav-label">主页</span>-->
+                            <#--<span class="fa arrow"></span>-->
+                        <#--</a>-->
+                        <#--<ul class="nav nav-second-level">-->
+                            <#--<li>-->
+                                <#--<a class="J_menuItem" href="index_v1.html" data-index="0">主页示例一</a>-->
+                            <#--</li>-->
+                            <#--<li>-->
+                                <#--<a class="J_menuItem" href="index_v2.html">主页示例二</a>-->
+                            <#--</li>-->
+                            <#--<li>-->
+                                <#--<a class="J_menuItem" href="index_v3.html">主页示例三</a>-->
+                            <#--</li>-->
+                            <#--<li>-->
+                                <#--<a class="J_menuItem" href="index_v4.html">主页示例四</a>-->
+                            <#--</li>-->
+                            <#--<li>-->
+                                <#--<a href="index_v5.html" target="_blank">主页示例五</a>-->
+                            <#--</li>-->
+                        <#--</ul>-->
+                     <#--</li>-->
+                <li>
+                <a class="J_menuItem" href="workbench/index.htm"><i class="fa fa-columns"></i> <span class="nav-label" style="color:#cdd6ec;">工作台</span></a>
                 </li>
                     <li>
-                        <a class="J_menuItem" href="workbench/index.htm"><i class="fa fa-columns"></i> <span class="nav-label">新工作台</span></a>
+                        <a class="J_menuItem" href="baidumap/index.htm"><i class="fa fa-columns"></i> <span class="nav-label" style="color: #cdd6ec;">设备GIS地图</span></a>
                     </li>
+                    <li>
+                        <a class="J_menuItem" href="eqdateselect/index.htm"><i class="fa fa-columns"></i> <span class="nav-label" style="color: #cdd6ec;">设备历史数据</span></a>
+                    </li>
+
+
                 </ul>
             </div>
         </nav>
@@ -108,14 +106,14 @@
                             </div>
                         </form>
                     </div>
-                    <ul class="nav navbar-top-links navbar-right">
+                    <#--<ul class="nav navbar-top-links navbar-right">-->
 
-                        <li class="dropdown hidden-xs">
-                            <a class="right-sidebar-toggle" aria-expanded="false">
-                                <i class="fa fa-tasks"></i> 主题
-                            </a>
-                        </li>
-                    </ul>
+                        <#--<li class="dropdown hidden-xs">-->
+                            <#--<a class="right-sidebar-toggle" aria-expanded="false">-->
+                                <#--<i class="fa fa-tasks"></i> 主题-->
+                            <#--</a>-->
+                        <#--</li>-->
+                    <#--</ul>-->
                 </nav>
             </div>
             <div class="row content-tabs">
@@ -123,7 +121,7 @@
                 </button>
                 <nav class="page-tabs J_menuTabs">
                     <div class="page-tabs-content">
-                        <a href="javascript:;" class="active J_menuTab" data-id="heoll.html">首页</a>
+                        <a href="javascript:;" class="active J_menuTab" data-id="workbench/index.htm">工作台</a>
                     </div>
                 </nav>
                 <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
@@ -145,7 +143,7 @@
                 <a href="quit.htm" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="heoll.html" frameborder="0" data-id="heoll.html" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="workbench/index.htm" frameborder="0" data-id="workbench/index.htm" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">&copy; 2017</div>

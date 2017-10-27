@@ -107,7 +107,8 @@
             <div class="item-row"><span class="item-row-title">传感器状态</sub></span><span id="itemp001" class="item-row-txt item-row-txt-pm25"></span><span class="item-row-unit"></span></div>
             <div class="item-row"><span class="item-row-title">PM<sub>2.5</sub></span><span id="itemp002" class="item-row-txt item-row-txt-pm10"></span><span class="item-row-unit">μg/m<sup>3</sup></span></div>
             <div class="item-row"><span class="item-row-title">PM<sub>10</sub></span><span id="itemp003" class="item-row-txt item-row-txt-so2"></span><span class="item-row-unit">μg/m<sup>3</sup></span></div>
-            <div class="item-row"><span class="item-row-title">风速</span><span id="itemp004" class="item-row-txt item-row-txt-no2"></span><span class="item-row-unit">M/S</span></div>
+            <div class="item-row"><span class="item-row-title">PM<sub>100</sub></span><span id="itemp009" class="item-row-txt item-row-txt-so2"></span><span class="item-row-unit">μg/m<sup>3</sup></span></div>
+             <div class="item-row"><span class="item-row-title">风速</span><span id="itemp004" class="item-row-txt item-row-txt-no2"></span><span class="item-row-unit">M/S</span></div>
             <div class="item-row"><span class="item-row-title">风向</span><span id="itemp005" class="item-row-txt item-row-txt-co"></span><span class="item-row-unit">方向</span></div>
             <div class="item-row"><span class="item-row-title">温度</span><span id="itemp006" class="item-row-txt item-row-txt-co"></span><span class="item-row-unit">摄氏度</span></div>
             <div class="item-row"><span class="item-row-title">湿度</span><span id="itemp007" class="item-row-txt item-row-txt-co"></span><span class="item-row-unit">RH%</span></div>
@@ -146,7 +147,7 @@
         //   map.setCurrentCity("河南");          // 设置地图显示的城市 此项是必须设置的
         map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
         var aj = $.ajax({
-            url: 'Equipment_data/Equipment_dateList.htm',// 跳转到 action
+            url: 'Equipment_info2/Equipmentinfo2List.htm',// 跳转到 action
             data: {},
             type: 'post',
             cache: false,
@@ -155,28 +156,39 @@
                 if (data.msg == "true") {
                     // var json_data =  JSON.parse(data);
                  var dataList = {value: []};
+                var na,nb;
                     for (var i = 0; i < data.list.length; i++) {
                         var obj = data.list[i];
-
-                        addMarker(obj, i);
-                        dataList.value.push({
-                            v_equipment_name: obj.v_equipment_name,
-                            dtm_create: obj.dtm_create
-                        });
-                        if (i + 1 >= data.list.length) {
-                            //移动地图位置
-                            map.panTo(new BMap.Point(obj.p015, obj.p014))
+                        if(obj.nLatitudeBd==null||obj.nLongitudeBd==null) {
+                            continue;
                         }
-                    }
+                        na=obj.nLatitudeBd;
+                                nb=obj.nLongitudeBd;
+                            addMarker(obj, i);
+                        dataList.value.push({
+                            iEquipmentId:obj.iEquipmentId,
+                            vEquipmentName: obj.vEquipmentName
+                            ,dtmCreate: obj.dtmCreate
+                        });
+                     }
+                    //移动地图位置
+                    map.panTo(new BMap.Point(nb,na))
 
                     $("#equipment_id").bsSuggest({
-                        indexId: 0,  //data.value 的第几个数据，作为input输入框的内容
-                        indexKey:0, //data.value 的第几个数据，作为input输入框的内容
-                        searchFields: [ "v_equipment_name"],  //有效搜索字段，
-                        effectiveFields: ["v_equipment_name", "dtm_create"],
-                        effectiveFieldsAlias:{v_equipment_name: "设备号",dtm_create: "最新数据时间"}, //有效字段的别名对象，用于 header 的显示
+//            indexId: 1,  //data.value 的第几个数据，作为input输入框的内容
+//            indexKey:1, //data.value 的第几个数据，作为input输入框的内容
+                        idField: "iEquipmentId",
+                        keyField: "vEquipmentName",
+                        searchFields: [ "vEquipmentName"],  //有效搜索字段，
+                        effectiveFields: ["iEquipmentId","vEquipmentName"],
+                        effectiveFieldsAlias:{iEquipmentId:"设备ID",vEquipmentName: "设备名称"}, //有效字段的别名对象，用于 header 的显示
                         clearable: true,
-                        data: dataList
+                     //   url:'Equipment_info/EquipmentinfoList.htm',
+//                        processData: function(json){
+//                            json.value=json.telsit
+//                            return json;
+//                        }
+                          data: dataList
                     }).on('onDataRequestSuccess', function (e, result) {
                         console.log('从 json.data 参数中获取，不会触发 onDataRequestSuccess 事件', result);
                     }).on('onSetSelectValue', function (e, keyword, data) {
@@ -197,7 +209,10 @@
 
    //    // 编写自定义函数,创建标注
    function addMarker(obj,i){
-       var point = new BMap.Point(obj.p015,obj.p014);
+    if(obj.nLatitudeBd==null||obj.nLongitudeBd==null){
+        return;
+    }
+       var point = new BMap.Point(obj.nLongitudeBd,obj.nLatitudeBd);
        var marker =null;
        if (obj.p002 == 0) {
            marker = new BMap.Marker(point, { icon: Level_Icon[0] });
@@ -205,16 +220,16 @@
            marker = new BMap.Marker(point, { icon: Level_Icon[getAirLevel_PM25(obj.p002).index] });
        }
        marker.enableDragging() ;// 开启拖拽功能
-       marker.setTitle(obj.v_equipment_name);//添加标题
-       var label = new BMap.Label("设备号:"+obj.v_equipment_name,{offset:new BMap.Size(-14,-5)});
+       marker.setTitle(obj.vEquipmentName);//添加标题
+       var label = new BMap.Label("设备号:"+obj.vEquipmentName,{offset:new BMap.Size(-14,-5)});
         label.setStyle({
                // color : "#fff",//  fontSize : "16px"//  backgroundColor :"0.05",
             border:"none"
          //  ,fontWeight :"bold"
        });
        marker.setLabel(label);
-       marker.bmap_stop_group=obj;
-       marker.indexid=i;
+       marker.objdate=obj;
+
        marker.addEventListener('mouseover', function (e) {// 鼠标移动上图标标识上// 变颜色
            var p = e.target;
            p.setTop(true) ;
@@ -225,11 +240,18 @@
        });
        marker.addEventListener('click', function (e) {// 图标单击
            var p = e.target;
+           var markers = map.getOverlays();
+            for (var i = 0; i < markers.length; i++) {
+               if (markers[i].toString() == "[object Marker]") {
+                   markers[i].setAnimation(null);
+                }
+           }
+           p.setAnimation(BMAP_ANIMATION_BOUNCE);
            var geoc = new BMap.Geocoder();//地址转中文
            geoc.getLocation(e.point, function(rs){
                var addComp = rs.addressComponents;
                var addvar=addComp.province + "" + addComp.city + "" + addComp.district + "" + addComp.street + "" + addComp.streetNumber;
-               setInfoData(p.bmap_stop_group,addvar);
+               setInfoData(p.objdate,addvar);
 
                //               var opts = {
 //                   width: 200, // 信息窗口宽度
@@ -237,7 +259,7 @@
 //                   title:"<p align=\"center\"><strong><span style=\"color:#E53333;\">信息</br>"+addvar+"</br>"+p.getTitle()+"</span></strong></p>", // 信息窗口标题
 //                   enableMessage: false//设置允许信息窗发送短息
 //               };
-//              var htmlctext="<p align=\"center\"><span style=\"color:#000000\">设备名:"+p.bmap_stop_group.v_equipment_name+"</span></p>";
+//              var htmlctext="<p align=\"center\"><span style=\"color:#000000\">设备名:"+p.objdate.vEquipmentName+"</span></p>";
 //                var infowindow = new BMap.InfoWindow(htmlctext, opts);
               // p.openInfoWindow(infowindow);
             });
@@ -245,6 +267,7 @@
 
        });
        map.addOverlay(marker);
+
    }
     function getAirLevel_PM25(airIndex) {
         if (0 <= airIndex && airIndex <= 35) {
@@ -286,41 +309,82 @@
             return { index: 6, level: "Ⅵ", color: "rgb(126,0,35)", desc: "严重污染" };
         }
     }
-        function setInfoData(data,addvar) {
-        $("div.data-container").show();
-        $(".item-row-txt-aqi").text(data.AQI);
-        $(".item-row-txt-name").text(addvar);
-        $(".item-row-txt-primary").text("污染物级别监控指标：PM2.5");
-        $(".item-row-txt-time").text("发布时间："+data.dtm_create);
-        $("#itemp001").text(data.p001);
-            $("#itemp002").text(data.p002);
-            $("#itemp003").text(data.p003);
-            $("#itemp004").text(data.p004);
-            $("#itemp005").text(data.p005);
-            $("#itemp006").text(data.p006);
-            $("#itemp007").text(data.p007);
-            $("#itemp008").text(data.p008);
+        function setInfoData(obj,addvar) {
+       //  var obj=data.obj;
+            $("div.data-container").show();
+            //    $(".item-row-txt-aqi").text(obj.AQI);
+            $(".item-row-txt-name").text(addvar);
+            $(".item-row-txt-primary").text("污染物级别监控指标：PM2.5");
+            $(".item-row-txt-time").text("发布时间："+obj.dtmCreate);
+            $("#itemp001").text(obj.p001);
+            $("#itemp002").text(obj.p002);
+            $("#itemp003").text(obj.p003);
+            $("#itemp004").text(obj.p004);
+            $("#itemp005").text(obj.p005name);
+            $("#itemp006").text(obj.p006);
+            $("#itemp007").text(obj.p007);
+            $("#itemp008").text(obj.p008);
+            $("#itemp009").text(obj.p009);
 
 
-            $("div.warpper > div.data-container > div.top-lay > div.item-row-aqi > div.item-row-txt-aqi").css("border-color", getAirLevel_PM25(data.p002).color);
-        $("div.warpper > div.data-container").css("border-color", getAirLevel_PM25(data.p002).color);
-         $("div.warpper > div.data-container > div.close-icon").css("color", getAirLevel_PM25(data.p002).color);
+            $("div.warpper > div.data-container > div.top-lay > div.item-row-aqi > div.item-row-txt-aqi").css("border-color", getAirLevel_PM25(obj.p002).color);
+            $("div.warpper > div.data-container").css("border-color", getAirLevel_PM25(obj.p002).color);
+            $("div.warpper > div.data-container > div.close-icon").css("color", getAirLevel_PM25(obj.p002).color);
+//            $.ajax({
+//                type:'post',
+//                url:'Equipment_info2/Equipmentinfo2List.htm.htm',
+//                data:{"vEquipmentName":data.vEquipmentName},
+//                cache:false,
+//                dataType:'json',
+//                success:function(data){
+//                    if( data.msg =="true" ) //服务器返回false，就将validatePassword2的值改为pwd2Error，这是异步，需要考虑返回时间
+//                    {
+//                        var obj=data.obj;
+//                        $("div.data-container").show();
+//                    //    $(".item-row-txt-aqi").text(obj.AQI);
+//                        $(".item-row-txt-name").text(addvar);
+//                        $(".item-row-txt-primary").text("污染物级别监控指标：PM2.5");
+//                        $(".item-row-txt-time").text("发布时间："+obj.dtmCreate);
+//                        $("#itemp001").text(obj.p001);
+//                        $("#itemp002").text(obj.p002);
+//                        $("#itemp003").text(obj.p003);
+//                        $("#itemp004").text(obj.p004);
+//                        $("#itemp005").text(obj.p005name);
+//                        $("#itemp006").text(obj.p006);
+//                        $("#itemp007").text(obj.p007);
+//                        $("#itemp008").text(obj.p008);
+//
+//
+//                        $("div.warpper > div.data-container > div.top-lay > div.item-row-aqi > div.item-row-txt-aqi").css("border-color", getAirLevel_PM25(obj.p002).color);
+//                        $("div.warpper > div.data-container").css("border-color", getAirLevel_PM25(obj.p002).color);
+//                        $("div.warpper > div.data-container > div.close-icon").css("color", getAirLevel_PM25(obj.p002).color);
+//                    }
+//                },
+//                error:function(e){
+//                    alert("异常错误"+e.message);
+//                }
+//            });
+
     }
 
 function  rygjMap(){
     var eid=$("#equipment_id").val();
 
     var markers = map.getOverlays();
+    var ifbo=false;
     for (var i = 0; i < markers.length; i++) {
-
-        if (markers[i].toString() == "[object Marker]") {
+         if (markers[i].toString() == "[object Marker]") {
             markers[i].setAnimation(null);
            if(eid==markers[i].getTitle()){
                map.panTo(markers[i].getPosition());
                markers[i].setAnimation(BMAP_ANIMATION_BOUNCE);
+               ifbo=true;
            }
 
         }
+    }
+    if(!ifbo){
+        alert("没有找到这个设备!");
     }
 }
 </script>

@@ -1,14 +1,19 @@
 package com.environment.contrller;
 
 import au.com.bytecode.opencsv.CSVWriter;
-import com.environment.domain.TEquipmentData;
-import com.environment.domain.TEquipmentDataExample;
-import com.environment.mapper.TEquipmentDataMapper;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.environment.mypuls.entity.TEquipmentData;
+import com.environment.mypuls.entity.TEquipmentInfo2;
+import com.environment.mypuls.entity.TWindDirectDic;
+import com.environment.mypuls.mapper.TEquipmentDataMapper;
+import com.environment.mypuls.service.ITEquipmentDataService;
+import com.environment.mypuls.service.ITEquipmentInfo2Service;
+import com.environment.mypuls.service.ITWindDirectDicService;
+import com.environment.mypuls.service.impl.TWindDirectDicServiceImpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.catalina.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,41 +36,68 @@ import java.util.Map;
 public class Equipment_dataContrller extends BaseTOAction{
 
     @Autowired
-    private TEquipmentDataMapper TEquipmentDataMapper;
+    ITEquipmentDataService TEquipmentDataServiceImpl;
+    @Autowired
+    ITWindDirectDicService TWindDirectDicServiceImpl;
+    @Autowired
+    ITEquipmentInfo2Service itEquipmentInfoService;
+    @Autowired
+    TEquipmentDataMapper  TEquipmentDataMapper;
 
-        @RequestMapping("Equipment_dateList.htm")
-        @ResponseBody
-        @ApiOperation(value = "返回设备数据")
-        public Map Equipment_dateList(){
-           // 老的当时查询设备. 用java分组去重
-//            TEquipmentDataExample de=new TEquipmentDataExample();
-//            de.setOrderByClause("v_equipment_name desc");
-//            TEquipmentDataExample.Criteria criteria =  de.createCriteria();//查询条件. 暂无就不设置了
-//
-//            de.setDistinct(true);//去重
-//         List<TEquipmentData> list=TEquipmentDataMapper.selectByExample(de);
-//            List<TEquipmentData> getlist=new ArrayList<TEquipmentData>();
-//            for (int i=0;i<list.size();i++){
-//                TEquipmentData listdata=list.get(i);
-//                boolean isf=true;
-//                for (TEquipmentData gitlistdata :getlist){
-//                    if(listdata.getV_equipment_name().equals(gitlistdata.getV_equipment_name())){
-//                        isf=false;
-//                        break;
-//                    }
-//                }
-//                if(isf) {
-//                    getlist.add(listdata);
-//                 }
-//            }
-            //新的查询设备 用分组查找最后创建时间的最大数据为基础
-            List<TEquipmentData> list=TEquipmentDataMapper.selectEquipmentData(null);
 
-            Map m=new HashMap();
-            m.put("list",list);
-            m.put("msg","true");
-            return m;
+
+    @RequestMapping("Equipment_getID.htm")
+    @ResponseBody
+    @ApiOperation(value = "返回设备数据")
+    public Map Equipment_getID(String vEquipmentName,Integer shu){
+        Map map=new HashMap();
+        if(vEquipmentName!=null&&!"".equals(vEquipmentName)){
+            map.put("v_equipment_name",vEquipmentName);
+        }else{
+            map.put("msg","设备名称空");
+            return map;
         }
+        List<TEquipmentInfo2> telist= itEquipmentInfoService.getTEquipmentInfo(map);
+        if(telist.size()<1){
+            map.put("msg","不存在的设备名称");
+            return map;
+        }else{
+            map.put("objdata",telist.get(0));
+        }
+
+      //  TEquipmentDataServiceImpl.selectPage(new com.baomidou.mybatisplus.plugins.Page<TEquipmentData>(0, 12));
+       if(shu==null||shu==0){
+           shu=1;
+       }
+        EntityWrapper<TEquipmentData> ew = new EntityWrapper<TEquipmentData>();
+        ew.setEntity(new TEquipmentData());
+        String name="vEquipmentName";
+        ew.where("v_equipment_name = {0} ",vEquipmentName).
+                orderBy("dtm_create",false).last("limit "+shu);
+        List<TEquipmentData> objlist=   TEquipmentDataServiceImpl.selectList(ew);
+
+        if(objlist.size()<0){
+            map.put("msg","没有设备数据");
+            return map;
+        }
+        List<TWindDirectDic> TWindDirectDicobj= TWindDirectDicServiceImpl.selectList(null);
+        for (TEquipmentData tda:objlist){
+            if(tda.getP005()!=null) {
+                try{
+                    tda.setP005name(TWindDirectDicobj.get(Integer.getInteger(tda.getP005().toString())).getvWindDirectName());
+                }catch (Exception e){
+                    tda.setP005name("无数据");
+                }
+            }else{
+                tda.setP005name("无数据");
+            }
+        }
+         map.put("objlist",objlist);
+          map.put("msg","true");
+         return map;
+    }
+
+
 
 
     @RequestMapping("SEquipment_dateList.htm")
@@ -79,14 +111,18 @@ public class Equipment_dataContrller extends BaseTOAction{
         Map params=new HashMap();
         params.put("start",datezu[0].replaceAll("/","-"));
         params.put("end",datezu[1].replaceAll("/","-"));
-        Page<?> page =  PageHelper.startPage(pageNum,
-                pageSize,true);
+       Page<?> page =  PageHelper.startPage(pageNum,
+              pageSize,true);
+
         List<TEquipmentData> te=    TEquipmentDataMapper.selectSEquipmentData(params);
+        PageHelper.clearPage();;
         params.clear();
         params.put("rows",te);
         params.put("total",page.getTotal());
         return params;
     }
+
+
 
     @RequestMapping("SEquipment_dateExport.htm")
     @ApiOperation(value = "设备历史数据 导出")
@@ -127,9 +163,9 @@ public class Equipment_dataContrller extends BaseTOAction{
             int i=0;
             for(TEquipmentData eq:te){
                 request.getSession().setAttribute("exportTag",i++);
-                String eqstr[]=new String[]{eq.getV_equipment_name(), eq.getP001().toString(), eq.getP002().toString(), eq.getP003().toString(), eq.getP004().toString(), eq.getP005(), eq.getP006().toString(),
+                String eqstr[]=new String[]{eq.getvEquipmentName(), eq.getP001().toString(), eq.getP002().toString(), eq.getP003().toString(), eq.getP004().toString(), eq.getP005name(), eq.getP006().toString(),
                         eq.getP007().toString(), eq.getP008().toString(), eq.getP009().toString(), eq.getP010().toString(), eq.getP011().toString(),
-                        eq.getP012().toString(), eq.getP013().toString(), eq.getP014().toString(), eq.getP015().toString(),eq.getDtm_create()
+                        eq.getP012().toString(), eq.getP013().toString(), eq.getP014().toString(), eq.getP015().toString(),eq.getDtmCreate()
                 };
                 csv.writeNext(eqstr);
             }

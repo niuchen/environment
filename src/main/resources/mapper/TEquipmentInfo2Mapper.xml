@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.environment.mypuls.mapper.TEquipmentInfo2Mapper" >
+  <!--查询设备, 设备-->
+  <select id="getTEquipmentInfo" resultType="com.environment.mypuls.entity.TEquipmentInfo2" parameterType="map">
+    select   t.*,p.p001,p.p002,p.p003,p.p004,p.p005,p.p006,
+    p.p007,p.p008,p.p009,p.p010,p.p011,p.p012,p.p013,p.p014,p.p015, p.dtm_create pdtm_create
+    , w.`v_wind_direct_name` p005name
+    from t_equipment_info2 t
+    left Join t_equipment_data2 p on t.v_equipment_name=p.v_equipment_name
+    left join `t_wind_direct_dic` w on w.`i_wind_direct_id`=p.`p005`
+    where 1=1
+     <if test="v_equipment_name != null" >
+      and t.`v_equipment_name`=#{v_equipment_name}
+    </if>
+
+  </select>
+
+
+
+</mapper>

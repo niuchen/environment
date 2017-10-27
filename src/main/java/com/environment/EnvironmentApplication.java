@@ -5,7 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan(basePackages="com.environment.mapper")
+//@MapperScan(basePackages="com.environment.mapper")
+@MapperScan(basePackages="com.environment.mypuls.mapper")
 public class EnvironmentApplication {
 
 	public static void main(String[] args) {
