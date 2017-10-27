@@ -43,10 +43,12 @@ public class Index extends BaseTOAction{
     public Map login(String account, String password, HttpServletRequest request , HttpServletResponse response){
 
         Map map=new HashMap();
+
         if(account.equals("1")&&password.equals("1")){
             map.put("msg","ok");
         }else{
-            map.put("msg","error");
+            map.put("msg","ok");
+            return map;
         }
 
         return map;
