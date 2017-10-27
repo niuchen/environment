@@ -361,11 +361,14 @@ function ymainfun(objdate){
         ]
     };
     var ymain1 = echarts.init(document.getElementById('ymain1'));
+    ymain1.clear();
     ymain1.setOption(optiony1);
 }
 function myChartfun(objdate,datezu,data25zu,data10zu,data100zu) {
     // 基于准备好的dom，初始化柱状图echarts实例
     var myChart2 = echarts.init(document.getElementById('main'));
+    myChart2.clear();
+
     option = {
         title : {
             text: '设备环境指标数据图'
@@ -377,23 +380,7 @@ function myChartfun(objdate,datezu,data25zu,data10zu,data100zu) {
         legend: {
             data:['PM2.5','PM10','PM100']
         },
-//        toolbox: {
-//            show : true,
-//            feature : {
-//                show:true,
-//                showDelay: 0,
-//                hideDelay: 0,
-//                dataView : {show: true, readOnly: false},
-//                magicType : {show: true, type: ['line', 'bar']},
-//                restore : {show: true},
-//                saveAsImage : {show: true},
-//                formatter: function (params,ticket,callback) {
-//                    // console.log(params);
-//                    var res =  params.name+"-"+params.data;
-//                    return res;
-//                }
-//            }
-//        },
+
         tooltip : {//鼠标悬浮弹窗提示
             /*  trigger: 'axis' */
             trigger : 'item',
